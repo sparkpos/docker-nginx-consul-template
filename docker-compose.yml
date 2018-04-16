@@ -1,0 +1,9 @@
+version: '3'
+services:
+  consul:
+    image: sparkpos/nginx-consul-template
+    environment:
+      - CONSUL_PORT_8500_TCP_ADDR=dplor.com
+    volumes:
+      - ./custom.ctmpl:/etc/nginx/nginx.conf.ctmpl
+    container_name: my-consul
