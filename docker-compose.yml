@@ -7,6 +7,9 @@ services:
       - 443:443
     environment:
       - CONSUL_PORT_8500_TCP_ADDR=dplor.com
+      - SERVICE_IGNORE=true
     volumes:
-      - ./custom.ctmpl:/etc/nginx/nginx.conf.ctmpl
-    container_name: my-consul
+      #- ./nginx.conf.ctmpl:/etc/nginx/nginx.conf.ctmpl
+      - /root/certs-wild:/etc/nginx/certs
+      - ./dhparam/dhparam.pem:/etc/nginx/dhparam/dhparam.pem
+    container_name: consul
