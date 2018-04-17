@@ -2,6 +2,9 @@ version: '3'
 services:
   consul:
     image: sparkpos/nginx-consul-template
+    ports:
+      - 80:80
+      - 443:443
     environment:
       - CONSUL_PORT_8500_TCP_ADDR=dplor.com
     volumes:
