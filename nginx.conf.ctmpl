@@ -50,7 +50,8 @@ server {
 	return 503;
 }
 
-{{ range services }} {{ $name := .Name}} {{ $domain := $name | split "_" | join "."}} {{$service := service .Name}}
+{{ range services }} {{ $name := .Name}} {{$service := service .Name}}
+{{ $domain := $name | split "_" | join "."}}{{ $domain_regressive := $domain |  regexReplaceAll "^[a-zA-z0-9]+." ""}}
 {{ if ne $name "consul"}}
 # {{$domain}}
 upstream {{$name | replaceAll "_" "."}} {
@@ -73,8 +74,8 @@ server {
 	ssl_session_timeout 5m;
 	ssl_session_cache shared:SSL:50m;
 	ssl_session_tickets off;
-	ssl_certificate /etc/nginx/certs/{{$domain |  regexReplaceAll "^[a-zA-z0-9]*?." ""}}.crt;
-	ssl_certificate_key /etc/nginx/certs/{{$domain |  regexReplaceAll "^[a-zA-z0-9]*?." ""}}.key;
+	ssl_certificate /etc/nginx/certs/{{ $domain_regressive }}.crt;
+	ssl_certificate_key /etc/nginx/certs/{{$domain_regressive}}.key;
 	add_header Strict-Transport-Security "max-age=31536000" always;
 	location / {
 		proxy_pass http://{{$domain}};
